@@ -1,6 +1,7 @@
 package edu.farmingdale.datastoresimplestoredemo
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -39,6 +40,12 @@ class AppStorage ( private val context: Context) {
     suspend fun saveHighScore(score: Int) {
         context.dataStore.edit { preferences ->
             preferences[PreferencesKeys.HIGHSCORE] = score
+        }
+    }
+
+    suspend fun saveDarkMode(mode_: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[PreferencesKeys.DARK_MODE] = mode_
         }
     }
 

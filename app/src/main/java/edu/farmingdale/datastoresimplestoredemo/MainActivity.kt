@@ -1,4 +1,5 @@
 package edu.farmingdale.datastoresimplestoredemo
+import android.R.attr.checked
 import android.content.Context
 import java.io.PrintWriter
 import android.os.Bundle
@@ -7,10 +8,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -20,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -74,8 +79,18 @@ fun DataStoreDemo(modifier: Modifier) {
     val appPrefs = store.appPreferenceFlow.collectAsState(AppPreferences())
     val coroutineScope = rememberCoroutineScope()
     var highScore by remember { mutableStateOf("") }
+    var user by remember { mutableStateOf("") }
+
+
 
     Column (modifier = Modifier.padding(50.dp)) {
+
+        TextField(
+            value = user,
+            onValueChange = { user = it },
+            label = { Text("Enter username") },
+            modifier = Modifier.padding(16.dp)
+        )
 
         TextField(
             value = highScore,
@@ -84,11 +99,15 @@ fun DataStoreDemo(modifier: Modifier) {
             modifier = Modifier.padding(16.dp)
         )
 
+
+
+
+
         Text("Values = ${appPrefs.value.userName}, " +
                 "${appPrefs.value.highScore}, ${appPrefs.value.darkMode}")
         Button(onClick = {
             coroutineScope.launch {
-                store.saveUsername("somevaluehere")
+                store.saveUsername(user)
 
                 val scoreInt = highScore.toIntOrNull() ?: 0
 
