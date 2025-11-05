@@ -1,5 +1,4 @@
 package edu.farmingdale.datastoresimplestoredemo
-import android.R.attr.checked
 import android.content.Context
 import java.io.PrintWriter
 import android.os.Bundle
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -24,7 +22,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -80,7 +77,7 @@ fun DataStoreDemo(modifier: Modifier) {
     val coroutineScope = rememberCoroutineScope()
     var highScore by remember { mutableStateOf("") }
     var user by remember { mutableStateOf("") }
-
+    var dark by remember { mutableStateOf(false) }
 
 
     Column (modifier = Modifier.padding(50.dp)) {
@@ -99,6 +96,8 @@ fun DataStoreDemo(modifier: Modifier) {
             modifier = Modifier.padding(16.dp)
         )
 
+        switch(dark, onCheckedChange = { dark = it } )
+
 
 
 
@@ -112,6 +111,8 @@ fun DataStoreDemo(modifier: Modifier) {
                 val scoreInt = highScore.toIntOrNull() ?: 0
 
                 store.saveHighScore(scoreInt)
+
+                store.saveDarkMode(dark)
             }
 
         }) {
@@ -120,6 +121,13 @@ fun DataStoreDemo(modifier: Modifier) {
     }
 }
 
+@Composable
+fun switch(isDark: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    Row {
+        Text("Dark")
+        Switch(checked = isDark, onCheckedChange = onCheckedChange)
+    }
+}
 // ToDo 1: Modify the App to store a high score and a dark mode preference
 // ToDo 2: Modify the APP to store the username through a text field
 // ToDo 3: Modify the App to save the username when the button is clicked
